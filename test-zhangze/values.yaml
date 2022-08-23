@@ -1,0 +1,40 @@
+postgresql:
+  auth:
+    database: test_zhangze
+    postgresPassword: password
+  fullnameOverride: postgresql
+  primary:
+    persistence:
+      size: 20Gi
+test1:
+  env:
+  - name: DatabaseUser
+    value: admin
+  - name: DatabasePassword
+    value: password
+  - name: DatabaseHost
+    value: postgresql
+  - name: test_zhangze
+    value: DB_NAME
+  fullnameOverride: test1
+  image:
+    repository: ghcr.io/forkmain-bot/test
+    tag: main
+  imagePullSecrets:
+  - name: test-zhangze-docker
+  nocalhost:
+    command:
+      debug: npm install && npm run dev
+      run: npm install && npm run dev
+    configPath: conf/nocalhost.yaml
+    env: null
+    gitURL: https://github.com/forkmain-bot/test.git
+    hotReload: false
+    image: ghcr.io/forkmain-bot/test
+    language: nextjs
+    persistentVolumeDirs:
+    - capacity: 20Gi
+      path: /home/nocalhost-dev
+    remoteDebugPort: 9009
+  service:
+    targetPort: 3000
